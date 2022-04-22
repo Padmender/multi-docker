@@ -15,7 +15,7 @@ after_success:
   - docker build -t padmender/multi-nginx ./nginx  
   - docker build -t padmender/multi-server ./server  
   - docker build -t padmender/multi-worker ./worker  
- # Log in to the docker CLI
+ # Log in to the docker CLI ui
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
  # Take those images and push them to docker hub
   - docker push  padmender/multi-client
