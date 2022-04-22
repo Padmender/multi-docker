@@ -1,0 +1,25 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - docker build -t padmender/docker-react -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true padmender/docker-react npm run test
+
+after_success:
+  - docker build -t padmender/multi-client ./client  
+  - docker build -t padmender/multi-nginx ./nginx  
+  - docker build -t padmender/multi-server ./server  
+  - docker build -t padmender/multi-worker ./worker  
+ # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+ # Take those images and push them to docker hub
+  - docker push  padmender/multi-client
+  - docker push  padmender/multi-nginx
+  - docker push  padmender/multi-server
+  - docker push  padmender/multi-worker
+  
