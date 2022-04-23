@@ -11,14 +11,21 @@ script:
   - docker run -e CI=true padmender/react-test npm test
 
 after_success:
-  - docker build -t padmender/multi-client ./client
-  - docker build -t padmender/multi-nginx ./nginx
-  - docker build -t padmender/multi-server ./server
-  - docker build -t padmender/multi-worker ./worker
+  - docker build -t multi-client ./client
+  - docker tag multi-client padmender8293/multi-client:multi-client
+  - docker build -t multi-nginx ./nginx
+  - docker tag multi-nginx padmender8293/multi-nginx:multi-nginx
+  - docker build -t multi-server ./server
+  - docker tag multi-server padmender8293/multi-server:multi-server
+  - docker build -t multi-worker ./worker
+  - docker tag multi-worker padmender8293/multi-worker:multi-worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push padmender/multi-client
-  - docker push padmender/multi-nginx
-  - docker push padmender/multi-server
-  - docker push padmender/multi-worker
+  - docker push padmender8293/multi-client
+  - docker push padmender8293/multi-nginx
+  - docker push padmender8293/multi-server
+  - docker push padmender8293/multi-worker
+
+
+
